@@ -1,0 +1,255 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>game</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+
+<h2>Play the game</h2>
+<div class="player-info">
+    <div class="level">Level 1</div>
+    <div class="score">
+        <span class="tip">Your score:</span>
+        <div class="current">0</div>
+        <span>/</span>
+        <span class="tip">At Least:</span>
+        <div class="at-least">100</div>
+    </div>
+</div>
+<div id="modal" class="modal">
+    <div onclick="closeModal()" class="modal-header">
+        <span id="bonus"></span>
+        <span>x</span>
+    </div>
+    <div class="content">
+
+    </div>
+</div>
+<div id="chatroom" class="chatroom">
+    <div class="chatroom-content">
+        <div class="messages">
+
+        </div>
+        <div class="sendBox">
+            <textarea id="text"></textarea>
+            <div class="actions">
+                <button id="send">Send</button>
+                <button onclick="next()" id="next">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    let currentLevel = 0;// current level
+    let LEVELS = [
+        ["                                                                                ",
+            "                                                                                ",
+            "                                                                                ",
+            "                                                                                ",
+            "                                                                                ",
+            "                                                                                ",
+            "                                                                  xxx           ",
+            "                                                   xx      xx    xx!xx          ",
+            "                                             xx                  x!!!x          ",
+            "                                                                 xx!xx          ",
+            "                                   xxxxx                          x!x           ",
+            "                                                                            xx  ",
+            "                                            o                                x  ",
+            "                                                                             x  ",
+            "  xxxxxxxxxxxxxxx                        xxxxx                               x  ",
+            "  x                     g                                         o        d x  ",
+            "  x  @    p    p                           o                      xxxxx       x  ",
+            "  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   xxxxxxxxxxxxxxxxxxxx     xxxxxxx   xxxxxxxxx  ",
+            "                              x   x                  x     x                    ",
+            "                              x!!!x                  x!!!!!x                    ",
+            "                              x!!!x                  x!!!!!x                    ",
+            "                              xxxxx                  xxxxxxx                    ",
+            "                                                                                ",
+            "                                                                                "
+        ],
+        ["                                                                                                                x!x  ",
+            "                                                                                                             x!x  ",
+            "                                                                                                             x!x  ",
+            "                                                                                                             x!x  ",
+            "                                                                                                          d  x!x  ",
+            "                                                                                                             x!x  ",
+            "                                                                                                 o         xx!x  ",
+            "                                                                                              xxxxxxxxxxxxxxx!!x  ",
+            "                                                                                                !!!!!!!!!!!!!!xx  ",
+            "                                                                                          xxxxxxxxxxxxxxxxxxxxx   ",
+            "                                                                                                                  ",
+            "                                                                                                                  ",
+            "                                               x     x                             xxxx      xxx                  ",
+            "                                               x     x                             x         x x                  ",
+            "                                               x     x                             x         x                    ",
+            "                                               x     x                           xxxx        x                    ",
+            "                  g                            xx    x                             x       xxx                   ",
+            "                                               x     x      o        x   x         x         x                    ",
+            "               xxxxxxxxxxx    xxx   xxx        x     x               x   x         x         x                    ",
+            "xxxxxxxxxx    xx     xx         x   x          x     x   xxxxxxxxx   x   x   xxxxxxxxx       x                    ",
+            "             xx       xx        x   x          x    xx               x   x   x               x                    ",
+            "@   p  p     x         x        x   x          x     x               xx  x   x               x                    ",
+            "xxxxxxxxxxxxxx         x        x   x          x     x               x   xxxxx   xxxxxx      x                    ",
+            "    x x      x         x       xx   xx         x     x               x     o     x x         x                    ",
+            "!!!!x x!!!!!!x         x!!!!!!xx     xx!!!!!!!!xx    x!!!!!!!!!x     x           x x         x                    ",
+            "!!!!x x!!!!!!x         x!!!!!xx       xxxxxxxxxx     x!!!!!!!xxx     xxxxxxxxxxxxx xx  o    xx                    ",
+            "!!!!x x!!!!!!x         x!!!!!x       o        o     xx!!!!!!xx                      xx     xx                     ",
+            "!!!!x x!!!!!!x         x!!!!!x                     xx!!!!!!xx                        xxxxxxx                      ",
+            "!!!!x x!!!!!!x         x!!!!!xxxxxxxxxxxxxxxxxxxxxxx!!!!!!xx                                                      ",
+        ],
+        ["                                                                                                              ",
+            "                                                                                                              ",
+            "                                                                                                              ",
+            "                                        p                                                                     ",
+            "                                                                                                              ",
+            "                                       xxx                                 xxx                                ",
+            "                                       x                    x          x                                      ",
+            "                                                            x          x                                      ",
+            "                                          xxx               x   o      x       xxx                            ",
+            "                                      x   x                 x          x      x!!!x                           ",
+            "                                      x   x                 xxxxxxxxxxxx       xxx                            ",
+            "                                      xx  x      x   x      x                                                ",
+            "                                      x   xxxxxxxxx   xxxxxxxx              x x                               ",
+            "                                      x   x           x                    x!!!x                              ",
+            "                                      x   x           x                     xxx                               ",
+            "                                      x  xx          x                                                       ",
+            "                                      x   x           x            xxx                                        ",
+            "                                      x   x           x           x!!!x                                       ",
+            "                                      x   x           x     o      xxx       xxx                              ",
+            "                                      xx xx          x                     x!!!x                             ",
+            "                              o                       x     x                xx         xxx                   ",
+            "                                                      x              x                 x!!!x                  ",
+            "                             xxx xxx xxx xxx     p    x!!!!!!!!!!!!!!x                    x                   ",
+            "                             x xxx x x xxx x          x!!!!!!!!!!!!!!x                g                       ",
+            "                             x             x   xxxxxxxxxxxxxxxxxxxxxxx                                        ",
+            "                             xx           xx                                         xxx                      ",
+            "  xxx                         x     x     x                                         x!!!x                xxx  ",
+            "  x x                         x    xxx    x                                          xxx                 x x  ",
+            "  x                           x    xxx    xxxxxxx                        xxxxx                             x  ",
+            "  x                           x           x                              x   x                             x  ",
+            "  x                           xxxx        x                              x x x      o                      x  ",
+            "  x                                       x        xxxx      xxxx      xxx xxx                             x  ",
+            "  x                xxx               o    x                              x         xxx                     x  ",
+            "  x               xxxxx       xx          x                             xxx       x!!!x          x         x  ",
+            "  xxxxxxxxxxxxxxxxxxxxx       x    xxx    x                             x x        xxx          xxx        x  ",
+            "  x                           xxxxxxxxxxxxx  x o  x    x  o x    x  o  xx xx                    xxx        x  ",
+            "  x      @    p      p        x           x!!x    x!!!!x    x!!!!x    xx   xx                    x      d  x  ",
+            "  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx           xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  ",
+            "                                                                                                              ",
+            "                                                                                                              "
+        ],
+        ["                                                                                                  xxx x       ",
+            "                                                                                                      x       ",
+            "                                                                                                  xxxxx       ",
+            "                                                                                                  x           ",
+            "                                                                                                  x xxx       ",
+            "                                                                                                  x x x       ",
+            "                                                                                   o            g xxx x       ",
+            "                                                                                                      x       ",
+            "                                                              xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx       ",
+            "                                                              x   x x   x x   x x   x x   x x   x x           ",
+            "                                                              xxx x xxx x xxx x xxx x xxx x xxx x xxxxx       ",
+            "                                                                x x   x x   x x   x x   x x   x x     x       ",
+            "                                                             xxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxxxx       ",
+            "                                                                                                              ",
+            "                         xxx                              xx                                                  ",
+            "                                                                                                              ",
+            "                                                                                                              ",
+            "                                                      xxxxx                                                   ",
+            "                   xxx         xxx                                                                            ",
+            "                                                             o                                                ",
+            "                          o                                                    xxx     xxx                    ",
+            "                                                           xxxxxxx                                            ",
+            "             xxx         xxx         xxx                   x            xxx                xxx                ",
+            "                                                           x                                                  ",
+            "                                                           x                                o                 ",
+            "  xxxxxxxxxxx                                             xx                 o                                ",
+            "  x         x o xxxxxxxxx o xxxxxxxxx o xx                 x                              xxxx                ",
+            "  x         x   x       x   x       x   x                  x    o            xxx   xxx                    d   ",
+            "  x  @      xxxxx   o   xxxxx   o   xxxxx                  x                                                  ",
+            "  xxxxxxx                                     xxxxx   xxxxxx   xxxxx    xxx                    xxxxxxxxxxxxxxx",
+            "        x     p                      p        x   x                     xxx                                   ",
+            "        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   x!!!!!!!!!!!!!!!!!!!!!xxx!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+            "                                                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "                                                                                                              "
+        ]
+    ];
+    let currentModal = {
+        duration: 0,
+        score: 0
+    };
+    let questionCountdown = 3;//3 chance for each question;
+    let interval;
+    let passedRecord = {
+        question: 0,
+        video: 0,
+        game: 0
+    };
+    let endRecord = {
+        question: 0,
+        video: 0,
+        game: 0
+    };
+    let SCORES = [500, 1000, 1500, 2000, 3000];//each level min score
+    let score = 0;
+    let keyScore = 50;//key score
+    let gameScore = 100;// play a game score
+    let videoScore = 50;// watch video score
+    let check = false;//has check question
+    let username;
+    username = prompt("Please enter your name！", "Anonymous")
+</script>
+<script src="socket.io/socket.io.js"></script>
+<script>
+    const socket = io.connect();
+    socket.on("msg", data => {
+        console.log(data)
+        addMsg(data.username, data.content, data.type)
+    })
+
+    function addMsg(user, content, type) {
+        let ele;
+        if (type === "me")
+            ele = ` <div class="message-item me">
+                <span class="text">${content}</span><span
+                    class="user"><< Me</span>
+            </div>`;
+        else
+            ele = ` <div class="message-item other">
+                <span class="user">${user} >> </span> <span
+                    class="text">${content}</span>
+            </div>`
+        $(".messages").append(ele);
+    }
+
+    $("#send").click(() => {
+        let content = $("#text").val();
+        addMsg(username, content, 'me')
+        socket.emit('send msg', {username, content})
+    })
+</script>
+<script src="js/chatroom.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/game.js"></script>
+<script>
+    updateLevelInfo();
+
+    function next() {
+        $("#chatroom").css("display", 'none')
+        currentLevel++;
+        updateLevelInfo();
+        if (currentLevel > 3)
+            alert("Congratulations on customs clearance！")
+        else {
+            startGame(currentLevel)
+            endRecord = passedRecord;
+        }
+
+    }
+</script>
+</html>

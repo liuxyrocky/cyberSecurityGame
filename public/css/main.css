@@ -1,0 +1,315 @@
+body {
+    background: #222;
+    margin: 0;
+}
+
+h2 {
+    color: #666;
+    font-family: monospace;
+    text-align: center;
+}
+
+.background {
+    table-layout: fixed;
+    border-spacing: 0;
+}
+
+.background td {
+    padding: 0;
+}
+
+.lava, .actor {
+    background: #e55;
+}
+
+.wall {
+    background: #444;
+    border: solid 3px #333;
+    box-sizing: content-box;
+}
+
+.actor {
+    position: absolute;
+}
+.door:before {
+    content: "🚪";
+    text-align: center;
+}
+
+.door {
+    background: #222;
+    border-radius: 50%;
+}
+.gameOther:before {
+    content: "🎮";
+    text-align: center;
+}
+
+.gameOther {
+    background: #222;
+    border-radius: 50%;
+}
+
+.video:before {
+    content: "📺";
+    text-align: center;
+}
+
+.video {
+    background: #222;
+    border-radius: 50%;
+}
+
+.coin:before {
+    content: "🔑";
+    text-align: center;
+}
+
+.coin {
+    background: #222;
+    border-radius: 50%;
+}
+
+.player:before {
+    content: "🦉";
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.player {
+    background: rgba(34, 34, 34, 0);
+    box-shadow: none;
+}
+
+.lost .player {
+    background: #a04040;
+}
+
+.won .player {
+    background: green;
+}
+
+.game {
+    position: relative;
+    overflow: hidden;
+}
+
+.modal {
+    z-index: 99;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-header {
+    background-color: white;
+    height: 5%;
+    width: 680px;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    padding:0 15px;
+}
+
+.content {
+    border: 5px solid white;
+    height: 400px;
+    background-color: #c5c8ce;
+    position: relative;
+    opacity: 0.7;
+    width: 700px;
+    padding: 20px 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.selections {
+    width: 90%;
+}
+
+.select {
+    font-size: 13px;
+    white-space: pre-line;
+    background-color: #f8f8f9;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.select:hover {
+    background-color: #e8eaec;
+    cursor: pointer;
+}
+
+.give-up {
+    font-size: 13px;
+    padding: 5px 15px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.give-up:hover {
+    background-color: #ed4014;
+
+}
+
+iframe {
+
+}
+
+.youtube-player {
+    height: 900px;
+    width: 1500px;
+    transform: scale(0.7);
+    position: absolute;
+}
+
+.chatroom {
+    z-index: 9999;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: #222222;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatroom-content {
+    width: 80%;
+    border: 5px solid white;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.messages {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+.me {
+    justify-content: flex-end;
+}
+
+.other {
+    justify-content: flex-start;
+}
+
+.message-item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0;
+    align-items: center;
+
+}
+
+.text {
+    color: white;
+    border: 1px solid #e8eaec;
+    border-radius: 10px;
+    padding: 5px 8px;
+    max-width: 60%;
+    font-size: 13px;
+}
+
+.user {
+    color: white;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100px;
+}
+
+.sendBox {
+    height: 30%;
+    border-top: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.sendBox textarea {
+    width: 99%;
+    height: 75%;
+    border: none;
+    background: #222;
+    color: white;
+}
+
+.sendBox textarea:focus {
+    outline: none;
+}
+
+.sendBox button {
+    background-color: #333333;
+    border: 1px solid white;
+    color: white;
+    height: 80%;
+    padding: 0 50px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.actions {
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+}
+
+.player-info {
+    padding: 10px 20px;
+    border: 1px solid #666;
+    display: flex;
+    position: absolute;
+    color: #666;
+    font-family: monospace;
+    font-size: 25px;
+    right: 20px;
+    background-color: #222;
+    z-index: 999999;
+    flex-direction: column;
+    font-weight: bold;
+}
+
+.score {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+}
+
+.current {
+    color: red;
+}
+
+.at-least {
+    color: green;
+}
